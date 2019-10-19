@@ -1,57 +1,60 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import CharacterCard from "./CharacterCard";
+// import CharacterCard from "./CharacterCard";
 
 export default function CharacterList() {
-  const [characters, setCharacters] = useState([]);
+  const [data, setData] = useState([]);
   const [query, setQuery] = useState('');
+  const [filteredCharacter, setFilteredCharacter] = useState('');
 
   useEffect(() => {
-    // TODO: Add API Request here - must run in `useEffect`
-    // Important: verify the 2nd `useEffect` parameter: the dependancies array!
-    axios.get(`https://rickandmortyapi.com/api/character/`)
-			.then(response => {
-        console.log(response)
-        const characters = response.data.results.filter(character => 
-          character.name.toLowerCase().includes(query.toLowerCase)()
-        );
-        setCharacters(characters);
-        // setCharacters(response.data.results);
-  		})
-			.catch(error => {
-				console.log(error);
-			});
+    axios.get(
+     ' https://rickandmortyapi.com/api/'
+    )
+    .then(response => {
+      console.log('Rick and Morty Characters: ', response);
+      setData(response.data);
+      setFilteredCharacter(response.data);
+    })
+  }, []);
+
+  useEffect(() => {
+    setFilteredCharacter(
+      data.filter(character =>
+        character.name.toLowerCase().includes(query.toLowerCase())
+      )
+    );
   }, [query]);
 
   const handleInputChange = event => {
     setQuery(event.target.value);
-  }
-  
+  };
+
   return (
-    <section className="character-list">
-      <h1>Check out your favorite characters!</h1>
-      <form className = 'search'>
+    <div>
+      <form className="search">
         <input
-          type = 'text'
-          onChange = {handleInputChange}
-          value = {query}
-          name = 'name'
-          tabIndex = '0'
-          className = 'prompt search-name'
-          placeholder = 'Search by Name'
-          autoComplete = 'off'
+          type="text"
+          onChange={handleInputChange}
+          value={query}
+          name="name"
+          tabIndex="0"
+          className="prompt search-name"
+          placeholder="Search By Name"
+          autoComplete="off"
         />
       </form>
-      <div className = 'results'>
-        {characters.map(data => {
+      <div>
+        {/* now map through the new filtered data */}
+        {filteredCharacter.map(data => {
           return (
-            <CharacterCard key={data.index} character={data.character} />
-          )
+            <div className="character-list " key={data._id}>
+              <h3>Species: {data.species}</h3>
+              <h3>Status: {data.status}</h3>
+            </div>
+          );
         })}
       </div>
-      {/* {characters.map((character, index) => {
-        return <CharacterCard key={index} character={character} />
-        })} */}
-    </section>
+    </div>
   );
 }
