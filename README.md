@@ -27,7 +27,7 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ]  Explain benefit(s) using `client-side routing`?
 
-> Answer:
+> Answer:  Client-side routing is faster after the initial download from the server because each time the user clicks on a link or element, they are taken to a different component of the same website, rather than requiring the server to send an entire new website to the client after each request.
 
 ## Project Set Up
 
